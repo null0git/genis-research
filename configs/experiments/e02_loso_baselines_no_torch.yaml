@@ -1,0 +1,12 @@
+experiment_id: "E02-no-torch"
+description: "RQ1 (LOSO): RF, XGBoost ONLY (no MLP) -- same rationale as e01_random_split_baselines_no_torch.yaml."
+research_question: "RQ1 (partial -- flow-independent tree models only, MLP excluded)"
+data_config: "configs/data.yaml"
+models:
+  - "configs/models/rf.yaml"
+  - "configs/models/xgboost.yaml"
+split:
+  strategy: "loso"
+label_column: "binary_label"
+use_sequences: false
+output_prefix: "e02_no_torch"

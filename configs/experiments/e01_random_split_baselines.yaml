@@ -1,0 +1,18 @@
+experiment_id: "E01"
+description: "Baseline reproduction: RF, XGBoost, MLP on a random stratified split."
+research_question: "Reproduction baseline for RQ1/RQ2"
+data_config: "configs/data.yaml"
+models:
+  - "configs/models/rf.yaml"
+  - "configs/models/xgboost.yaml"
+  - "configs/models/mlp.yaml"
+split:
+  strategy: "random"
+  train_frac: 0.70
+  val_frac: 0.15
+  test_frac: 0.15
+  n_seeds: 5
+  seeds: [42, 43, 44, 45, 46]
+label_column: "binary_label"
+use_sequences: false
+output_prefix: "e01"

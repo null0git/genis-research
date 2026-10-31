@@ -1,0 +1,13 @@
+experiment_id: "E02"
+description: "RQ1: RF, XGBoost, MLP on leave-one-scenario-out cross-validation."
+research_question: "RQ1"
+data_config: "configs/data.yaml"
+models:
+  - "configs/models/rf.yaml"
+  - "configs/models/xgboost.yaml"
+  - "configs/models/mlp.yaml"
+split:
+  strategy: "loso"
+label_column: "binary_label"
+use_sequences: false
+output_prefix: "e02"

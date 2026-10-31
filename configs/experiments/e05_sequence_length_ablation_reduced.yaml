@@ -1,0 +1,12 @@
+experiment_id: "E05-reduced"
+description: "Sequence-length ablation, REDUCED to a single length (10) for compute-constrained environments (e.g. free Colab). This is the pre-approved first fallback cut from STAGE2_PROPOSAL_AND_METHODOLOGY.md Section 7 -- NOT an ad-hoc shortcut. Cuts E05 from 78 model fits to 26 (2 models x 1 length x (5 seeds + 8 folds)). If used instead of the full ablation, state this explicitly in the manuscript's Limitations section (Section 20) rather than silently reporting E05-reduced results as if they were the full ablation."
+research_question: "RQ2 (ablation) -- reduced scope"
+data_config: "configs/data.yaml"
+models:
+  - "configs/models/cnn1d.yaml"
+  - "configs/models/gru.yaml"
+sequence_lengths: [10]
+splits_to_run: ["random", "loso"]
+label_column: "binary_label"
+use_sequences: true
+output_prefix: "e05_reduced"

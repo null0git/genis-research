@@ -1,0 +1,10 @@
+model_name: "random_forest"
+model_family: "flow_independent"
+framework: "sklearn"
+hyperparameters:
+  n_estimators: 300
+  max_depth: null
+  min_samples_leaf: 2
+  class_weight: "balanced"
+  n_jobs: -1
+  random_state: 42

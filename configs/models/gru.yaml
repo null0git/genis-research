@@ -1,0 +1,15 @@
+model_name: "gru"
+model_family: "sequence_aware"
+framework: "torch"
+hyperparameters:
+  hidden_size: 64
+  num_layers: 1
+  bidirectional: false
+  dropout: 0.2
+  learning_rate: 0.001
+  weight_decay: 0.00001
+  batch_size: 256
+  max_epochs: 40
+  early_stopping_patience: 5
+  sequence_length: 10   # overridden per-run for the E05 ablation (5, 10, 20)
+  random_state: 42

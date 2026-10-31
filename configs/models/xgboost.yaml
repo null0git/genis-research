@@ -1,0 +1,15 @@
+model_name: "xgboost"
+model_family: "flow_independent"
+framework: "xgboost"
+hyperparameters:
+  n_estimators: 400
+  max_depth: 8
+  learning_rate: 0.1
+  subsample: 0.9
+  colsample_bytree: 0.9
+  eval_metric: "mlogloss"
+  n_jobs: -1
+  random_state: 42
+  # sample_weight is passed at fit time from class weights computed on the
+  # training split (see src/training/train.py); XGBoost does not accept a
+  # class_weight="balanced" argument directly.

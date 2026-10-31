@@ -1,0 +1,12 @@
+experiment_id: "E05"
+description: "Sequence-length ablation: 1D-CNN and GRU at lengths 5, 10, 20 under random and LOSO splits."
+research_question: "RQ2 (ablation)"
+data_config: "configs/data.yaml"
+models:
+  - "configs/models/cnn1d.yaml"
+  - "configs/models/gru.yaml"
+sequence_lengths: [5, 10, 20]
+splits_to_run: ["random", "loso"]
+label_column: "binary_label"
+use_sequences: true
+output_prefix: "e05"

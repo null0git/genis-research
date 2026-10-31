@@ -1,0 +1,13 @@
+experiment_id: "E04"
+description: "RQ2 main effect + RQ1xRQ2 interaction (LOSO): 1D-CNN and GRU, sequence length 10."
+research_question: "RQ2"
+data_config: "configs/data.yaml"
+models:
+  - "configs/models/cnn1d.yaml"
+  - "configs/models/gru.yaml"
+split:
+  strategy: "loso"
+label_column: "binary_label"
+use_sequences: true
+sequence_length: 10
+output_prefix: "e04"

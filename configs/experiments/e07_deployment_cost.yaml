@@ -1,0 +1,21 @@
+experiment_id: "E07"
+description: "RQ3: training time, inference latency, model size, peak memory for all 5 models."
+research_question: "RQ3"
+data_config: "configs/data.yaml"
+models:
+  - "configs/models/rf.yaml"
+  - "configs/models/xgboost.yaml"
+  - "configs/models/mlp.yaml"
+  - "configs/models/cnn1d.yaml"
+  - "configs/models/gru.yaml"
+split:
+  strategy: "random"
+  train_frac: 0.70
+  val_frac: 0.15
+  test_frac: 0.15
+  n_seeds: 1
+  seeds: [42]
+label_column: "binary_label"
+sequence_length: 10
+inference_batch_size: 1
+output_prefix: "e07"

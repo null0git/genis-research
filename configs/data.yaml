@@ -1,0 +1,152 @@
+# Dataset configuration for GeNIS, 60-second flow interval only.
+#
+# EVERYTHING BELOW IS CONFIRMED against real, uploaded GeNIS files, not
+# guessed: /mnt/user-data/uploads/scenario-7-authtest.csv (from
+# 3-scenarios.zip/scenarios-60-sec/) and genis-60-sec-test.csv (from
+# 4-preprocessed.zip). See DATASET.md for the full verification trail.
+#
+# PRIMARY DATA SOURCE: 3-scenarios.zip's scenarios-60-sec/ folder --
+# 8 files, one per scenario (scenario-1-disrupt.csv ... scenario-8-authtest.csv).
+# NOT 4-preprocessed -- that stage strips StartTime/LastTime/IdleTime
+# entirely and ships pre-shuffled, which is exactly what this project's
+# LOSO/sequence design cannot use. Extract scenarios-60-sec/ to
+# preprocessed_data_dir below; the other three interval folders
+# (5/10/30-sec) are not needed for this project's scope.
+#
+# CONFIRMED SCENARIO STRUCTURE: 8 scenario files total, NOT 11 as
+# originally guessed in Stage 1. Benign traffic (user/admin/background)
+# lives INSIDE each of the 8 files alongside that scenario's attack
+# payload -- confirmed directly: scenario-7-authtest.csv contains 25,445
+# benign flows (BinaryLabel=0) and 4,234 attack flows (bruteforce-ssh,
+# recon-nmap, recon-dns). LOSO cross-validation is an 8-fold design.
+#
+# CONFIRMED StartTime FORMAT: zero-padded "HH:MM:SS" time-of-day (e.g.
+# "08:55:38"), NOT a Unix epoch number, NOT a full datetime. Verified
+# monotonically increasing in file row order (this stage is NOT shuffled,
+# unlike 4-preprocessed) across the single-day span checked
+# (08:55:38-16:59:57, no midnight rollover). Parsed by
+# src/data/preprocessing.py::_parse_start_time into seconds-since-midnight.
+#
+# CONFIRMED DROP LIST: derived by diffing this stage's 125 raw columns
+# against Silva et al. (2026)'s published 87-column preprocessed schema
+# (an actual uploaded file from each stage, diffed programmatically -- not
+# retyped by hand). This reproduces their exact feature-selection
+# philosophy, with ONE deliberate, disclosed exception: StartTime is in
+# their drop list (they don't use temporal ordering at all) but this
+# project keeps it, since scenario-ordered sequencing is the entire point
+# of RQ2. IdleTime is in their drop list too, and independently confirmed
+# here as an important one to drop regardless -- it contains a raw Unix
+# epoch value on EVERY row (~1.739e9), not "time since last activity" as
+# its name and the official feature dictionary suggest; keeping it would
+# silently leak absolute calendar time straight into the feature matrix,
+# directly undermining the cross-scenario generalization this project
+# tests for.
+
+dataset_name: "GeNIS"
+flow_interval_seconds: 60
+raw_data_dir: "data/raw"
+preprocessed_data_dir: "data/preprocessed"   # point this at your extracted scenarios-60-sec/ folder
+cache_dir: "data/cache"
+
+zenodo_doi: "10.5281/zenodo.14919237"
+zenodo_record_id: "14919237"
+zenodo_url: "https://zenodo.org/records/14919237"
+
+column_map:
+  scenario_id: null              # no explicit column -- derived from filename (scenario-1-disrupt, etc.) by derive_scenario_column's fallback
+  start_time: "StartTime"        # CONFIRMED real, HH:MM:SS format, monotonic in file order
+  binary_label: "BinaryLabel"
+  category_label: "CategoryLabel"
+  subcategory_label: "SubCategoryLabel"
+
+# CONFIRMED: reproduces Silva et al. (2026)'s exact drop-column philosophy
+# (diffed programmatically against their published preprocessed schema),
+# minus StartTime (which we deliberately keep -- see note above).
+drop_columns:
+  - "AutoId"
+  - "Cause"
+  - "DIntActDist"
+  - "DIntDist"
+  - "DIntIdlDist"
+  - "DIntPktIdl"
+  - "Dir"
+  - "DstAddr"
+  - "DstGap"
+  - "DstMac"
+  - "DstOui"
+  - "DstRetra"
+  - "ERange"
+  - "FlowID"
+  - "IdleTime"
+  - "Inode"
+  - "LastTime"
+  - "NStrok"
+  - "Rank"
+  - "Retrans"
+  - "SIntActDist"
+  - "SIntDist"
+  - "SIntIdlDist"
+  - "SRange"
+  - "SrcAddr"
+  - "SrcGap"
+  - "SrcMac"
+  - "SrcOui"
+  - "SrcRetra"
+  - "StdDev"
+  - "TcpOpt"
+  - "Trans"
+  - "dAS"
+  - "dCo"
+  - "dDSb"
+  - "dHops"
+  - "dIpId"
+  - "dMpls"
+  - "dNStrok"
+  - "dTos"
+  - "dTtl"
+  - "dVid"
+  - "dVlan"
+  - "dVpri"
+  - "dstUdata"
+  - "iAS"
+  - "pRetran"
+  - "sAS"
+  - "sCo"
+  - "sDSb"
+  - "sIpId"
+  - "sMpls"
+  - "sNStrok"
+  - "sVid"
+  - "sVlan"
+  - "sVpri"
+  - "srcUdata"
+
+# CONFIRMED: matches Silva et al. exactly -- these are the only 3 raw
+# columns their pipeline one-hot encodes (verified: Proto_tcp, State_CON,
+# etc. exist as separate columns in their published preprocessed schema).
+# NOTE: Ssaddr/Sdaddr are NOT in this list and NOT in drop_columns --
+# confirmed via genis-features.csv (the official feature dictionary) and
+# real data (values 1-3798, right-skewed) that these are legitimate
+# "number of connections with same service+address" COUNT features, not
+# encoded IP identifiers as originally (wrongly) assumed. They stay in the
+# model's feature set as ordinary numeric columns.
+categorical_columns:
+  - "State"
+  - "Flgs"
+  - "Proto"
+
+# CONFIRMED real scenario filenames (from the actual 3-scenarios.zip listing).
+scenarios:
+  attack:
+    - "scenario-1-disrupt"
+    - "scenario-2-disrupt"
+    - "scenario-3-disrupt"
+    - "scenario-4-disrupt"
+    - "scenario-5-disrupt"
+    - "scenario-6-authtest"
+    - "scenario-7-authtest"
+    - "scenario-8-authtest"
+  benign: []
+# benign: [] is intentional -- there are no separate benign-only scenario
+# files. Benign flows (BinaryLabel=0) live inside each of the 8 files
+# above, confirmed directly in scenario-7-authtest.csv.

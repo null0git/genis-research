@@ -1,0 +1,12 @@
+model_name: "mlp"
+model_family: "flow_independent"
+framework: "torch"
+hyperparameters:
+  hidden_sizes: [128, 64]
+  dropout: 0.2
+  learning_rate: 0.001
+  weight_decay: 0.00001
+  batch_size: 256
+  max_epochs: 40
+  early_stopping_patience: 5
+  random_state: 42

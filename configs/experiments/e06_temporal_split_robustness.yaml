@@ -1,0 +1,17 @@
+experiment_id: "E06"
+description: "Secondary robustness check: within-scenario chronological split, all 5 models."
+research_question: "Robustness check (not part of confirmatory RQ1/RQ2 tests)"
+data_config: "configs/data.yaml"
+models:
+  - "configs/models/rf.yaml"
+  - "configs/models/xgboost.yaml"
+  - "configs/models/mlp.yaml"
+  - "configs/models/cnn1d.yaml"
+  - "configs/models/gru.yaml"
+split:
+  strategy: "temporal"
+  train_frac: 0.70
+label_column: "binary_label"
+use_sequences: false   # set true per-model at run time for cnn1d/gru; see experiments/e06/run.py
+sequence_length: 10
+output_prefix: "e06"
