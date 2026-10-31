@@ -1,6 +1,10 @@
 MIT License
 
+<<<<<<< HEAD
 Copyright (c) 2026 [YOUR NAME HERE]
+=======
+Copyright (c) 2026 null0git
+>>>>>>> 81864f4af6d9139ec739acad419d1059418d7db4
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,6 +23,7 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+<<<<<<< HEAD
 
 ---
 
@@ -27,3 +32,5 @@ cover the GeNIS dataset, which has its own license set by its creators on
 its Zenodo record (see DATASET.md, Section 1) -- confirm and comply with
 that license separately when using or redistributing the dataset itself.
 Replace "[YOUR NAME HERE]" with your actual name before publishing.
+=======
+>>>>>>> 81864f4af6d9139ec739acad419d1059418d7db4
