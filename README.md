@@ -88,8 +88,8 @@ genis-temporal-generalization/
 ## Installation
 
 ```bash
-git clone <this repository>
-cd genis-temporal-generalization
+git clone https://github.com/null0git/genis-research.git
+cd genis-research
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 ```
